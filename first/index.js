@@ -39,6 +39,23 @@ const player = new Fighter({
         x : 0,
         y : 0,
     },
+    scale : 2.5,
+    offset : {
+        x : 215,
+        y : 157,
+    },
+    imageSrc : "/first/img/1p/Idle.png",
+    framesMax : 8,
+    sprites : {
+        idle : {
+            imageSrc : "/first/img/1p/Idle.png",
+            framesMax : 8,
+        },
+        run : {
+            imageSrc : "/first/img/1p/Run.png",
+            framesMax : 8,
+        },
+    }
 });
 
 const enemy = new Fighter({
@@ -55,6 +72,23 @@ const enemy = new Fighter({
         x : -50,
         y : 0,
     },
+    imageSrc : "/first/img/1p/Idle.png",
+    framesMax : 8,
+    scale : 2.5,
+    offset : {
+        x : 215,
+        y : 157,
+    },
+    sprites : {
+        idle : {
+            imageSrc : "/first/img/1p/Idle.png",
+            framesMax : 8,
+        },
+        run : {
+            imageSrc : "/first/img/1p/Run.png",
+            framesMax : 8,
+        },
+    }
 });
 
 console.log(player);
@@ -108,18 +142,23 @@ function animate(){
     // else if(keys.d.pressed){
     //     player.velocity.x = +1;
     // }
+    player.image = player.sprites.idle.image;
 
     if(keys.a.pressed && player.lastKey === "a"){
+        player.image = player.sprites.run.image;
         player.velocity.x = -2;
     }
     else if(keys.d.pressed && player.lastKey === "d"){
+        player.image = player.sprites.run.image;
         player.velocity.x = +2;
     }
-
+    enemy.image = enemy.sprites.idle.image;
     if(keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft"){
+        enemy.image = enemy.sprites.run.image;
         enemy.velocity.x = -2;
     }
     else if(keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight"){
+        enemy.image = enemy.sprites.run.image;
         enemy.velocity.x = +2;
     }
 
