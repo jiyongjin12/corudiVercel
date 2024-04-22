@@ -4,7 +4,7 @@ const c = canvas.getContext("2d"); //2d로 만들겠다는 코드
 canvas.width = 1024;
 canvas.height = 576;
 
-const gravity = 0.5;
+const gravity = 0.7;
 
 const background = new Sprite({
     position : {
@@ -55,6 +55,18 @@ const player = new Fighter({
             imageSrc : "/first/img/1p/Run.png",
             framesMax : 8,
         },
+        jump : {
+            imageSrc : "/first/img/1p/Jump.png",
+            framesMax : 2,
+        },
+        fall : {
+            imageSrc : "/first/img/1p/Fall.png",
+            framesMax : 2,
+        },
+        attack1 : {
+            imageSrc : "/first/img/1p/Attack1.png",
+            framesMax : 6,
+        },
     }
 });
 
@@ -72,21 +84,33 @@ const enemy = new Fighter({
         x : -50,
         y : 0,
     },
-    imageSrc : "/first/img/1p/Idle.png",
+    imageSrc : "/first/img/2p/Idle.png",
     framesMax : 8,
     scale : 2.5,
     offset : {
         x : 215,
-        y : 157,
+        y : 167,
     },
     sprites : {
         idle : {
-            imageSrc : "/first/img/1p/Idle.png",
-            framesMax : 8,
+            imageSrc : "/first/img/2p/Idle.png",
+            framesMax : 4,
         },
         run : {
-            imageSrc : "/first/img/1p/Run.png",
+            imageSrc : "/first/img/2p/Run.png",
             framesMax : 8,
+        },
+        jump : {
+            imageSrc : "/first/img/2p/Jump.png",
+            framesMax : 2,
+        },
+        fall : {
+            imageSrc : "/first/img/2p/Fall.png",
+            framesMax : 2,
+        },
+        attack1 : {
+            imageSrc : "/first/img/2p/Attack1.png",
+            framesMax : 4,
         },
     }
 });
@@ -142,24 +166,51 @@ function animate(){
     // else if(keys.d.pressed){
     //     player.velocity.x = +1;
     // }
-    player.image = player.sprites.idle.image;
-
+    //player.image = player.sprites.idle.image;
+    
     if(keys.a.pressed && player.lastKey === "a"){
-        player.image = player.sprites.run.image;
-        player.velocity.x = -2;
+        //player.image = player.sprites.run.image;
+        player.velocity.x = -5;
+        player.switchSprite('run');
     }
     else if(keys.d.pressed && player.lastKey === "d"){
-        player.image = player.sprites.run.image;
-        player.velocity.x = +2;
+        //player.image = player.sprites.run.image;
+        player.velocity.x = +5;
+        player.switchSprite('run');
     }
-    enemy.image = enemy.sprites.idle.image;
+    else{
+        player.switchSprite('idle');
+    }
+
+    if(player.velocity.y < 0){
+        player.switchSprite('jump');
+        // player.image = player.sprites.jump.image;
+        // player.framesMax = player.sprites.jump.framesMax;
+    }
+    else if(player.velocity.y > 0){
+        player.switchSprite('fall');
+    }
+
+    //enemy.image = enemy.sprites.idle.image;
     if(keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft"){
-        enemy.image = enemy.sprites.run.image;
-        enemy.velocity.x = -2;
+        enemy.switchSprite('run');
+        enemy.velocity.x = -5;
     }
     else if(keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight"){
-        enemy.image = enemy.sprites.run.image;
-        enemy.velocity.x = +2;
+        enemy.switchSprite('run');
+        enemy.velocity.x = +5;
+    }
+    else{
+        enemy.switchSprite('idle');
+    }
+
+    if(enemy.velocity.y < 0){
+        enemy.switchSprite('jump');
+        // player.image = player.sprites.jump.image;
+        // player.framesMax = player.sprites.jump.framesMax;
+    }
+    else if(enemy.velocity.y > 0){
+        enemy.switchSprite('fall');
     }
 
     if(rectangularColison({rectangle1:player, rectangle2:enemy}) &&
