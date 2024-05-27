@@ -165,6 +165,7 @@ class Fighter extends Sprite {
         //d를 눌렀을 때 x의 속도 변화
         this.position.x += this.velocity.x;
 
+        // 바닥 충돌 감지? 
         if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
             this.velocity.y = 0;
             this.position.y = 330;
@@ -197,6 +198,7 @@ class Fighter extends Sprite {
 
 
     switchSprite(sprite) {
+        // 죽음 에니메이션 중
         if (this.image === this.sprites.death.image) 
         {
             if(this.framesCurrent === this.sprites.death.framesMax - 1)
@@ -206,7 +208,9 @@ class Fighter extends Sprite {
             return;
         }
         
+        // 공격 애니메이션 중일 때
         if (this.image === this.sprites.attack1.image && this.framesCurrent < this.sprites.attack1.framesMax - 1) return;
+        // 피격 애니메이션 중일 때
         if (this.image === this.sprites.takeHit.image && this.framesCurrent < this.sprites.takeHit.framesMax - 1) return;
 
         switch (sprite) {
